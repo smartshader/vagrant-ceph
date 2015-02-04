@@ -6,6 +6,11 @@ Vagrant.configure("2") do |config|
 		config.cache.auto_detect = true
 	end
 
+	config.hostmanager.enabled = true
+	config.hostmanager.manage_host = true
+	config.hostmanager.ignore_private_ip = false
+	config.hostmanager.include_offline = true
+
 	config.vm.provider :virtualbox do |vb|
 		vb.customize ["modifyvm", :id, "--nictype1", "virtio"]
 		vb.customize ["modifyvm", :id, "--nictype2", "virtio"]
@@ -38,6 +43,8 @@ Vagrant.configure("2") do |config|
 
 	(0..2).each do |i|
 		config.vm.define "mon#{i}" do |mon|
+			mon.vm.box = "wheezy64"
+			mon.vm.box_url = "http://os.enocloud.com:8080/v1/AUTH_fc47c4103c9b4aaf9271c581776a268f/public/wheezy64.box"
 			mon.vm.hostname = "ceph-mon#{i}.test"
 			mon.vm.network :private_network, ip: "192.168.251.1#{i}"
 			mon.vm.network :private_network, ip: "192.168.252.1#{i}"
@@ -47,6 +54,8 @@ Vagrant.configure("2") do |config|
 
 	 (0..2).each do |i|
 		 config.vm.define "osd#{i}" do |osd|
+			 osd.vm.box = "wheezy64"
+			 osd.vm.box_url = "http://os.enocloud.com:8080/v1/AUTH_fc47c4103c9b4aaf9271c581776a268f/public/wheezy64.box"
 			 osd.vm.hostname = "ceph-osd#{i}.test"
 			 osd.vm.network :private_network, ip: "192.168.251.10#{i}"
 			 osd.vm.network :private_network, ip: "192.168.252.10#{i}"
@@ -62,6 +71,8 @@ Vagrant.configure("2") do |config|
 
 	 (0..1).each do |i|
 		 config.vm.define "mds#{i}" do |mds|
+			 mds.vm.box = "wheezy64"
+			 mds.vm.box_url = "http://os.enocloud.com:8080/v1/AUTH_fc47c4103c9b4aaf9271c581776a268f/public/wheezy64.box"
 			 mds.vm.hostname = "ceph-mds#{i}.test"
 			 mds.vm.network :private_network, ip: "192.168.251.15#{i}"
 			 mds.vm.provision :shell, :path => "scripts/mds.sh"
